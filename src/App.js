@@ -1,11 +1,14 @@
 import React from 'react';
+import { BrowserRouter, Route } from "react-router-dom";
+import Login from './components/Login';
+import AdminPage from './components/AdminPage';
 
 function App() {
   return (
-    <div >
-      new app
-    </div>
-
+      <BrowserRouter>
+        <Route exact path='/' component={Login} />
+        <Route exact path='/adminPage' component={AdminPage} />
+    </BrowserRouter>
   );
 }
 
