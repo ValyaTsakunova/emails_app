@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import ReactSelect from "react-select";
 
 function MultiSelect (props) {
-  // isOptionSelected sees previous props.value after onChange
   const valueRef = useRef(props.value);
   valueRef.current = props.value;
 
