@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import {useHistory} from "react-router-dom"
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
+import '../styles/Login.css';
 
-function Login(){
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -10,14 +11,15 @@ function Login(){
     const handleLogin = () => {
         history.push('/adminPage')
     }
-    
-    return(
-        <div >
-            <div><p>Email: </p><input value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-            <div><p>Password: </p><input value={password} onChange={(e) => setPassword(e.target.value)} /></div>
-            <button onClick={handleLogin}>Log in</button>
-        </div>
 
+    return (
+        <div className="loginContainer">
+            <div>
+                <div><p>Email </p><input value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+                <div><p>Password </p><input value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+                <button onClick={handleLogin}>Log in</button>
+            </div>
+        </div>
     )
 }
 

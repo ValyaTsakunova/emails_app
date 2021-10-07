@@ -1,34 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import MultiSelect from './MultiSelect';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/AdminPage.css'
 
-// let toolbarOptions = [
-//     ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-//     ['blockquote', 'code-block'],
-    
-//     [{ 'header': 1 }, { 'header': 2 }], // custom button values
-//     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-//     [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
-//     [{ 'indent': '-1'}, { 'indent': '+1' }], // outdent/indent
-//     [{ 'direction': 'rtl' }], // text direction
-    
-//     [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
-//     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-//     [ 'link', 'image', 'video', 'formula' ], // add's image support
-//     [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
-//     [{ 'font': [] }],
-//     [{ 'align': [] }],
-    
-//     ['clean'] // remove formatting button
-//     ];
-
-
-
-
-function AdminPage(){
+function AdminPage() {
     const [selected, setSelected] = useState([]);
+    const [subject, setSubject] = useState('')
     const [text, setText] = useState('');
 
     const options = [
@@ -38,12 +16,17 @@ function AdminPage(){
         { value: "4", label: "Jane" },
         { value: "5", label: "Mike" }
     ];
-    
-    const saveText = (txt) => {
-        setText(txt);
-        console.log(``)
-    }
 
+    const sendMessage = () => {
+        let message = {
+            subject: subject,
+            text: text
+        }
+        console.log(message);
+        setSubject('');
+        setText('');
+    }
+    
     const formats = [
         "width",
         "height",
@@ -95,15 +78,23 @@ function AdminPage(){
         },
     };
 
-    return(
+    return (
         <div className="adminContainer">
-            <ReactQuill theme="snow" value={text} onChange={(txt) => saveText(txt)}  formats={formats} modules={modules}/>
-           <MultiSelect options={options} value={selected} onChange={setSelected} />
-           
+            <div className="textEditor">
+                <div className="subjectBlock">
+                    <p className="subjectTitle">Subject:</p>
+                    <input className="subjectInput" value={subject} onChange={(e) => setSubject(e.target.value)}></input>
+                </div>
+                <ReactQuill theme="snow" value={text} onChange={(txt) => setText(txt)} formats={formats} modules={modules} />
+                <div className="sendBlock">
+                    <button onClick={sendMessage}>Send</button>
+                </div>
+            </div>
+            <div className="multiSelect">
+                <MultiSelect options={options} value={selected} onChange={setSelected} />
+            </div>
         </div>
     )
 }
-
-
 
 export default AdminPage;

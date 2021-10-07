@@ -2,12 +2,21 @@ import React, { useRef } from "react";
 import ReactSelect from "react-select";
 
 function MultiSelect (props) {
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isSelected ? 'white' : 'black',
+      backgroundColor: state.isSelected ? '#6495ED' : 'white',
+      borderBottom: state.isSelected ? '1px solid white' : null,
+    })
+  }
+
   const valueRef = useRef(props.value);
   valueRef.current = props.value;
 
   const selectAllOption = {
     value: "<SELECT_ALL>",
-    label: "All Items"
+    label: "Select all users"
   };
 
   const isSelectAllSelected = () =>
@@ -56,6 +65,7 @@ function MultiSelect (props) {
       hideSelectedOptions={false}
       closeMenuOnSelect={false}
       isMulti
+      styles={customStyles}
     />
   );
 };
