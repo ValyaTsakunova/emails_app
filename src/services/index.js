@@ -16,12 +16,12 @@ export const sendEmail = async(data) => {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization' : `Bearer ${localStorage.getItem('token')}`
         },
     })
-    .then(res => res.json()).then(res => console.log(res))
+    .then(res => res.json())
 };
 
 

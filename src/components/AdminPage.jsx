@@ -20,20 +20,27 @@ function AdminPage() {
         { value: "5", label: "Mike" }
     ];
 
-    let fileReader;
-
-    const handleFileRead = (e) => {
-        const content = fileReader.result;
-        setFileText(content)
-    };
-      
-    const handleFileChosen = (file) => {
+    const onUploadFileChange = async (e) => {
+        const file = e.target.files[0];
+        const base64 = await fileToBase64(file);
         setFileName(file.name)
-        fileReader = new FileReader();
-        fileReader.onloadend = handleFileRead;
-        // fileReader.readAsText(file)
-        fileReader.readAsArrayBuffer(file);
-    };
+        setFileText(base64);
+    }
+
+    const fileToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+      
+            fileReader.onload = () => {
+              resolve(fileReader.result);
+            };
+      
+            fileReader.onerror = (error) => {
+              reject(error);
+            };
+          });
+      }
 
     const sendMessage = () => {
         let message = {
@@ -50,6 +57,7 @@ function AdminPage() {
         sendEmail(message)
         setSubject('');
         setText('');
+        console.log(fileText)
     }
     
     const formats = [
@@ -109,11 +117,11 @@ function AdminPage() {
                 <div className="subjectBlock">
                     <p className="subjectTitle">Subject:</p>
                     <input className="subjectInput" value={subject} onChange={(e) => setSubject(e.target.value)}></input>
-                    
                 </div>
                 <ReactQuill theme="snow" value={text} onChange={(txt) => setText(txt)} formats={formats} modules={modules} />
                 <div className="sendBlock">
-                <input type="file" name="file" id="file" className="inputfile" onChange={e => handleFileChosen(e.target.files[0])} multiple />
+                {/* <input type="file" name="file" id="file" className="inputfile" onChange={e => handleFileChosen(e.target.files[0])} multiple /> */}
+                <input type="file" name="file" id="file" className="inputfile" onChange={(e) => onUploadFileChange(e)} multiple />
                 <label htmlFor="file">Choose a file</label>
                     <button onClick={sendMessage}>Send</button>
                 </div>
