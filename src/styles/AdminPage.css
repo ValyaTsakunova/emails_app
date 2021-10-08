@@ -38,6 +38,23 @@
 }
 
 .sendBlock{
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
     padding-top: 15px;
 }
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    color: blue;
+    display: inline-block;
+    border-bottom: '1px solid black';
+}
+

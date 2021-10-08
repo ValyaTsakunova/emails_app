@@ -1,0 +1,1 @@
+export const loginAdm = (data) => ({type: 'LOGIN_ADMIN', data});
