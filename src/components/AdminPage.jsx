@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
-import MultiSelect from './MultiSelect';
+import { MultiSelect, formats, modules } from './MultiSelect';
+import { sendEmail}  from '../services';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/AdminPage.css';
-import {sendEmail} from '../services'
 
 function AdminPage() {
     const [selected, setSelected] = useState([]);
@@ -11,6 +11,7 @@ function AdminPage() {
     const [text, setText] = useState('');
     const [fileName, setFileName] = useState('');
     const [fileText, setFileText] = useState('');
+    const [chooseRecievers, setChooseRecievers] = useState(false)
 
     const options = [
         { value: "1", label: "vtsakunova@mail.ru" },
@@ -23,8 +24,10 @@ function AdminPage() {
     const onUploadFileChange = async (e) => {
         const file = e.target.files[0];
         const base64 = await fileToBase64(file);
+        const indexOfBase64 = base64.indexOf('base64');
+        const stringBase64 = base64.slice(indexOfBase64+7);
         setFileName(file.name)
-        setFileText(base64);
+        setFileText(stringBase64);
     }
 
     const fileToBase64 = (file) => {
@@ -43,8 +46,12 @@ function AdminPage() {
       }
 
     const sendMessage = () => {
+        if(!selected.length){
+            return setChooseRecievers(true)
+        }
+        let receivers = selected.map(el => el.label)
         let message = {
-            receivers: [selected[0].label],
+            receivers: receivers,
             subject: subject,
             content: text,
             attachments: [
@@ -57,59 +64,8 @@ function AdminPage() {
         sendEmail(message)
         setSubject('');
         setText('');
-        console.log(fileText)
+        setChooseRecievers(false)
     }
-    
-    const formats = [
-        "width",
-        "height",
-        "header",
-        "font",
-        "size",
-        "bold",
-        "italic",
-        "underline",
-        "strike",
-        "blockquote",
-        "list",
-        "bullet",
-        "indent",
-        "link",
-        "image",
-        "color",
-        "align",
-        "alt",
-        "style",
-    ];
-
-    const modules = {
-        toolbar: {
-            container: [
-                [
-                    { header: "1" },
-                    { header: "2" },
-                    { header: [3, 4, 5, 6] },
-                    { font: [] },
-                ],
-                ["bold", "italic", "underline"],
-                [
-                    { align: "" },
-                    { align: "center" },
-                    { align: "right" },
-                    { align: "justify" },
-                ],
-                [
-                    { list: "ordered" },
-                    { list: "bullet" },
-                    { indent: "-1" },
-                    { indent: "+1" },
-                ],
-                ["link", "image"],
-                ["clean"],
-                ["code-block"],
-            ],
-        },
-    };
 
     return (
         <div className="adminContainer">
@@ -120,7 +76,6 @@ function AdminPage() {
                 </div>
                 <ReactQuill theme="snow" value={text} onChange={(txt) => setText(txt)} formats={formats} modules={modules} />
                 <div className="sendBlock">
-                {/* <input type="file" name="file" id="file" className="inputfile" onChange={e => handleFileChosen(e.target.files[0])} multiple /> */}
                 <input type="file" name="file" id="file" className="inputfile" onChange={(e) => onUploadFileChange(e)} multiple />
                 <label htmlFor="file">Choose a file</label>
                     <button onClick={sendMessage}>Send</button>
@@ -128,6 +83,7 @@ function AdminPage() {
             </div>
             <div className="multiSelect">
                 <MultiSelect options={options} value={selected} onChange={setSelected} />
+                {chooseRecievers ? <div>Plese, choose receivers</div> : null }
             </div>
         </div>
     )
