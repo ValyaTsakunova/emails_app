@@ -1,14 +1,18 @@
 .adminContainer{
-    display: flex;
+
 }
 
-.multiSelect{
-    width: 100%;
+.multiSelectBlock{
+    display: flex;
     padding: 10px;
 }
 
-.textEditor{
+.multiSelect{
+    padding-left: 15px;
     width: 100%;
+}
+
+.textEditor{
     padding: 10px;
 }
 
@@ -58,3 +62,11 @@
     border-bottom: '1px solid black';
 }
 
+.emptyRecievers{
+    padding-left: 10px;
+    color: red;
+}
+
+.emptyRecieversChange{
+    display: none;
+}

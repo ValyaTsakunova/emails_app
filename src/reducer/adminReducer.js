@@ -1,5 +1,5 @@
 const defaultState = {
-    token : ""
+    token : "",
 };
 
 export default function adminReducer (state = defaultState, action){
@@ -9,7 +9,6 @@ export default function adminReducer (state = defaultState, action){
                 ...state,
                 token: action.data
         }
-
         default:
            return state   
     }

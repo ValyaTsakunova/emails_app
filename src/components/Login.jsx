@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import {connect} from "react-redux";
 import {loginAdmin} from '../thunk/index'
-// import {login} from '../services/login'
 import '../styles/Login.css';
 
 function Login(props) {
@@ -25,13 +24,13 @@ function Login(props) {
             <div className="loginBlock">
                 <div>
                     <p>Email</p>
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="type your email here..." className="emailInput" />
                 </div>
                 <div>
                     <p>Password</p>
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="type your password here..." className="passwordInput" type="password" />
                 </div>
-                <button onClick={handleLogin}>Log in</button>
+                <button onClick={handleLogin} className="loginButton" >Log in</button>
             </div>
         </div>
     )
