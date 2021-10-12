@@ -1,42 +1,56 @@
 const URL = 'http://orendatribedev-env.eba-w9vfhmpi.eu-north-1.elasticbeanstalk.com';
 
-export const login = async(admin) => {
-    const resp = await fetch(`${URL}/Users/login`, {
-        method: 'POST',
-        body: JSON.stringify(admin),
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-    })
-    if(resp.status == "200"){
-        const json = await resp.json();
-        return json
+export const login = async (admin) => {
+    try {
+        const resp = await fetch(`${URL}/Users/login`, {
+            method: 'POST',
+            body: JSON.stringify(admin),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        })
+        if (resp.status == "200") {
+            const json = await resp.json();
+            return json
+        }
+    } catch (e) {
+        throw new Error(e.message)
     }
+
 };
 
-export const getAllEmails = async() => {
-    return await fetch(`${URL}/Emails/getAll`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization' : `Bearer ${localStorage.getItem('token')}`
-        },
-    })
-    .then(res => res.json())
+export const getAllEmails = async () => {
+    try {
+        return await fetch(`${URL}/Emails/getAll`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+        .then(res => res.json())
+    } catch (e) {
+        console.log(e.message)
+    }
+
 };
 
-export const sendEmail = async(data) => {
-    console.log(data);
-    return await fetch(`${URL}/Emails/send`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization' : `Bearer ${localStorage.getItem('token')}`
-        },
-    })
+export const sendEmail = async (data) => {
+    try {
+        return await fetch(`${URL}/Emails/send`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+    } catch (e) {
+        throw new Error(e.message)
+    }
+
 };
 
 export const formats = [
@@ -59,15 +73,10 @@ export const formats = [
     "align",
     "alt",
     "style",
-  ];
-  
-  export const modules = {
+];
+
+export const modules = {
     toolbar: {
-      // handlers: {
-        image: {
-          width: 100, // default
-        // }
-     },
         container: [
             [
                 { header: "1" },
@@ -93,4 +102,4 @@ export const formats = [
             ["code-block"],
         ],
     },
-  };
+};

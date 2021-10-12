@@ -7,12 +7,12 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emptyInput, setEmptyInput] = useState(false);
-    const [wrongCred, setWrongCred ] = useState(false);
+    const [wrongCred, setWrongCred] = useState(false);
 
     let history = useHistory();
 
-    const handleLogin = async() => {
-        if(!email || !password){
+    const handleLogin = async () => {
+        if (!email || !password) {
             return setEmptyInput(true)
         }
         let admin = {
@@ -20,9 +20,9 @@ function Login() {
             password: password
         }
         const res = await login(admin);
-        if(!res){
-           return setWrongCred(true)
-        }else{
+        if (!res) {
+            return setWrongCred(true)
+        } else {
             localStorage.setItem("token", res);
             history.push('/adminPage')
         }
@@ -40,8 +40,8 @@ function Login() {
                     <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="type your password here..." className="passwordInput" type="password" />
                 </div>
                 <button onClick={handleLogin} className="loginButton" >Log in</button>
-                {emptyInput && (!email || !password) ? <div className="loginError">Email and password are requared fields</div> : null }
-                {wrongCred ? <div className="loginError">Such user doesn't exist. Check your credentials</div> : null }
+                {emptyInput && (!email || !password) ? <div className="loginError">Email and password are requared fields</div> : null}
+                {wrongCred ? <div className="loginError">Such user doesn't exist. Check your credentials</div> : null}
             </div>
         </div>
     )

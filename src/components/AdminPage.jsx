@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { MultiSelect, } from './MultiSelect';
-import { sendEmail, getAllEmails,formats, modules } from '../services';
+import { sendEmail, getAllEmails, formats, modules } from '../services';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/AdminPage.css';
 
@@ -16,16 +15,15 @@ function AdminPage() {
     const [fileText, setFileText] = useState('');
     const [emptyFields, setEmptyFields] = useState(false);
 
+    const [inputValue, setInputValue] = useState('');
+    const [selectedUsers, setSelectedUsers] = useState([])
+
     useEffect(() => {
         (async () => {
             const res = await getAllEmails();
-            let usersArr = [];
-            for (let i = 0; i < res.length; i++) {
-                let el = { value: `${i}`, label: `${res[i]}` };
-                usersArr.push(el)
+            if(res){
+              setUsers(res)  
             }
-            console.log(usersArr)
-            setUsers(usersArr)
         })()
     }, [])
 
@@ -52,6 +50,7 @@ function AdminPage() {
     }
 
     const sendMessage = () => {
+        console.log(selectedUsers)
         if (!selected.length || !subject || !text) {
             return setEmptyFields(true)
         }
@@ -67,7 +66,7 @@ function AdminPage() {
                 }
             ]
         }
-        sendEmail(message)
+        // sendEmail(message)
         setSubject('');
         setText('');
         setSelected('');
@@ -80,32 +79,49 @@ function AdminPage() {
         setFileText('')
     }
 
+    const chooseUser = (user) => {
+        const arrOfUsers = [...selectedUsers, user];
+        setSelectedUsers(arrOfUsers);
+    }
+
     return (
         <>
-        <div className="adminContainer">
-            <div className="multiSelectBlock">
-                <p className="recieversTitle">Recievers:</p>
-                <div className="multiSelect"><MultiSelect options={users} value={selected} onChange={setSelected} /></div>
-            </div>
-            <div className="textEditor">
-                <div className="subjectBlock">
-                    <p className="subjectTitle">Subject:</p>
-                    <input className="subjectInput" value={subject} onChange={(e) => setSubject(e.target.value)}></input>
+            <div className="adminContainer">
+ <div className="recieversTitle">Recievers:</div>
+                <div className="multiSelectBlock">
+                   
+                   
+                    {/* <div>{selectedUsers.map(user => {return (<span key={user}>{user}, </span>)})}</div> */}
+                    <div className="multiSelect">
+                        <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} className="userInput" />
+                        <div className="scrollList">
+                          {inputValue && users.length !== 0 ? users.filter(user => user.toLowerCase()
+                        .includes(inputValue.toLowerCase()))
+                        .map(user => { return (<div key={user} onClick={() => chooseUser(user)}>{user}</div>) }) : null}  
+                        </div>
+                        
+                    </div>
+                    <button className="chooseAllButton">Select all</button>
                 </div>
-                <ReactQuill theme="snow" value={text} onChange={(txt) => setText(txt)} formats={formats} modules={modules} />
-                <div className="sendBlock">
-                    <input type="file" name="file" id="file" className="inputfile" onChange={(e) => onUploadFileChange(e)} multiple />
-                    {!fileName ?
-                        <label htmlFor="file" className="chooseFile">Choose a file</label> :
-                        <div><FontAwesomeIcon icon={faCopy} size="3x" color="rgb(35, 35, 107)" />
-                            <p>{fileName}</p>
-                            <button className="deleteFile" onClick={deleteFile}>Delete file</button>
-                        </div>}
-                    <button onClick={sendMessage} className="sendButton">Send</button>
+                <div className="textEditor">
+                    <div className="subjectBlock">
+                        <p className="subjectTitle">Subject:</p>
+                        <input className="subjectInput" value={subject} onChange={(e) => setSubject(e.target.value)}></input>
+                    </div>
+                    <ReactQuill theme="snow" value={text} onChange={(txt) => setText(txt)} formats={formats} modules={modules} />
+                    <div className="sendBlock">
+                        <input type="file" name="file" id="file" className="inputfile" onChange={(e) => onUploadFileChange(e)} multiple />
+                        {!fileName ?
+                            <label htmlFor="file" className="chooseFile">Choose a file</label> :
+                            <div><FontAwesomeIcon icon={faCopy} size="3x" color="rgb(35, 35, 107)" />
+                                <p>{fileName}</p>
+                                <button className="deleteFile" onClick={deleteFile}>Delete file</button>
+                            </div>}
+                        <button onClick={sendMessage} className="sendButton">Send</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        {emptyFields && (!selected.length || !subject || !text) ? <div className="emptyRecievers">Recievers, subject and message are requared fields</div> : null}
+            {emptyFields && (!selected.length || !subject || !text) ? <div className="emptyRecievers">Recievers, subject and message are requared fields</div> : null}
         </>
     )
 }

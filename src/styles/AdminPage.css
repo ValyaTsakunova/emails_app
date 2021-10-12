@@ -8,11 +8,13 @@
 
 .multiSelectBlock{
     display: flex;
+    justify-content: space-between;
 }
 
 .multiSelect{
-    padding-left: 15px;
-    width: 100%;
+    /* padding-left: 15px; */
+    width: 80%;
+    position: relative;
 }
 
 .textEditor{
@@ -96,3 +98,35 @@
     margin-block-end: 0em;
 }
 
+.chooseAllButton{
+    background-color: rgb(35, 35, 107);
+    color: white;
+    border-radius: 5px;
+    height: 40px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.scrollList{
+    width: 100%;
+    max-height: 100px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: absolute;
+    top: 30px;
+    left: 10px;
+    background-color: white;
+    /* padding: 0px 10px 0px 10px; */
+    z-index: 2;
+}
+
+.scrollList:blur {
+    display: none;
+}
+
+.userInput{
+    width: 100%;
+    height: 25px;
+    border-radius: 10px;
+    padding-left: 10px;
+
+}

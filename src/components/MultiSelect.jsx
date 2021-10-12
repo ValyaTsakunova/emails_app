@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ReactSelect from "react-select";
 
-export function MultiSelect (props) {
+export function MultiSelect(props) {
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
