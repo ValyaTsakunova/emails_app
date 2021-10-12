@@ -1,10 +1,13 @@
 .adminContainer{
-
+    margin: 10px;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    background-color: rgba(255, 255, 255, 0.534);
+    border-radius: 10px;
 }
 
 .multiSelectBlock{
     display: flex;
-    padding: 10px;
 }
 
 .multiSelect{
@@ -13,7 +16,7 @@
 }
 
 .textEditor{
-    padding: 10px;
+    padding-top: 10px;
 }
 
 .ql-editor{
@@ -23,7 +26,7 @@
 
 .subjectBlock{
     display: flex;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .subjectTitle{
@@ -32,13 +35,14 @@
 }
 
 .subjectInput{
-    margin-left: 5px;
+    margin-left: 15px;
     width: 100%;
     outline: none;
     border-top: none;
     border-left: none;
     border-right: none;
     border-bottom: "1px solid red";
+    background-color: transparent;
 }
 
 .sendBlock{
@@ -57,16 +61,38 @@
 }
 
 .inputfile + label {
-    color: blue;
+    color: black;
+    text-decoration: underline;
     display: inline-block;
     border-bottom: '1px solid black';
 }
 
 .emptyRecievers{
-    padding-left: 10px;
     color: red;
+    font-size: 16px;
+    text-align: center;
 }
 
-.emptyRecieversChange{
-    display: none;
+.sendButton{
+    background-color: rgb(35, 35, 107);
+    color: white;
+    padding: 0px 20px;
+    border-radius: 5px;
+    height: 40px;
+    font-family: 'Poppins', sans-serif;
 }
+
+.deleteFile{
+    background-color: rgb(35, 35, 107);
+    color: white;
+    padding: 0px 5px;
+    border-radius: 5px;
+    height: 30px;
+    font-family: 'Poppins', sans-serif; 
+}
+
+.recieversTitle{
+    margin-block-start: 5px;
+    margin-block-end: 0em;
+}
+

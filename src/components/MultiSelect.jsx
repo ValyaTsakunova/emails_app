@@ -1,57 +1,6 @@
 import React, { useRef } from "react";
 import ReactSelect from "react-select";
 
-export const formats = [
-  "width",
-  "height",
-  "header",
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-  "color",
-  "align",
-  "alt",
-  "style",
-];
-
-export const modules = {
-  toolbar: {
-      container: [
-          [
-              { header: "1" },
-              { header: "2" },
-              { header: [3, 4, 5, 6] },
-              { font: [] },
-          ],
-          ["bold", "italic", "underline"],
-          [
-              { align: "" },
-              { align: "center" },
-              { align: "right" },
-              { align: "justify" },
-          ],
-          [
-              { list: "ordered" },
-              { list: "bullet" },
-              { indent: "-1" },
-              { indent: "+1" },
-          ],
-          ["link", "image"],
-          ["clean"],
-          ["code-block"],
-      ],
-  },
-};
-
 export function MultiSelect (props) {
   const customStyles = {
     option: (provided, state) => ({

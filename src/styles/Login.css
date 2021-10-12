@@ -1,20 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400&display=swap');
+
 .loginContainer{
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     margin-top: -80px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .loginBlock{
-    border: 1px solid rgb(35, 35, 107);
+    border: 2px solid rgba(11, 5, 32, 0.856);
     padding: 30px;
     border-radius: 10%;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.274);
 }
 
 .loginBlock div p{
-    font-size: 20px;;
+    font-size: 20px;
+    margin-block-end: 7px;
 }
 
 .loginButton{
@@ -23,6 +28,7 @@
    color: white;
    padding: 10px;
    border-radius: 5px;
+   font-family: 'Poppins', sans-serif;
 }
 
 .emailInput, .passwordInput{
@@ -30,4 +36,9 @@
     height: 30px;
     border-radius: 10px;
     padding-left: 10px;
+}
+
+.loginError{
+    color: red;
+    margin-top: 10px;
 }

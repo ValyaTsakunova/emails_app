@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import {connect} from "react-redux";
-import {loginAdmin} from '../thunk/index'
+import { login } from '../services/index'
 import '../styles/Login.css';
 
-function Login(props) {
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [emptyInput, setEmptyInput] = useState(false);
+    const [wrongCred, setWrongCred ] = useState(false);
 
     let history = useHistory();
 
-    const handleLogin = () => {
+    const handleLogin = async() => {
+        if(!email || !password){
+            return setEmptyInput(true)
+        }
         let admin = {
             userName: email,
             password: password
         }
-        props.auth(admin)
-        history.push('/adminPage')
+        const res = await login(admin);
+        if(!res){
+           return setWrongCred(true)
+        }else{
+            localStorage.setItem("token", res);
+            history.push('/adminPage')
+        }
     }
 
     return (
@@ -31,21 +40,11 @@ function Login(props) {
                     <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="type your password here..." className="passwordInput" type="password" />
                 </div>
                 <button onClick={handleLogin} className="loginButton" >Log in</button>
+                {emptyInput && (!email || !password) ? <div className="loginError">Email and password are requared fields</div> : null }
+                {wrongCred ? <div className="loginError">Such user doesn't exist. Check your credentials</div> : null }
             </div>
         </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    admin : state.admin
-});
-
-const mapDispatchToProps = (dispatch ) => ({
-    auth: (data) => {dispatch(loginAdmin(data))},
-});
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Login);
-
+export default Login
