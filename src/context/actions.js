@@ -1,0 +1,1 @@
+export const getUsers = (data) => ({type: 'GET_USERS', data});

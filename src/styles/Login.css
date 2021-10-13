@@ -20,6 +20,7 @@
 .loginBlock div p{
     font-size: 20px;
     margin-block-end: 7px;
+    margin-block-start: 15px;
 }
 
 .loginButton{

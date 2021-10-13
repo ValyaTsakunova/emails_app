@@ -22,7 +22,7 @@ export const login = async (admin) => {
 
 export const getAllEmails = async () => {
     try {
-        return await fetch(`${URL}/Emails/getAll`, {
+        const resp = await fetch(`${URL}/Emails/getAll`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,16 +30,21 @@ export const getAllEmails = async () => {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
         })
-        .then(res => res.json())
-    } catch (e) {
-        console.log(e.message)
+        const json = await resp.json();
+        if (resp.status == "200") {
+            return json.value
+        }
+        return json.message
+    } 
+    catch (e) {
+        return false
     }
 
 };
 
 export const sendEmail = async (data) => {
     try {
-        return await fetch(`${URL}/Emails/send`, {
+        const resp =  await fetch(`${URL}/Emails/send`, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -47,8 +52,11 @@ export const sendEmail = async (data) => {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
         })
+        if (resp.status == "200") {
+            return 'sended'
+        }
     } catch (e) {
-        throw new Error(e.message)
+        return false
     }
 
 };
