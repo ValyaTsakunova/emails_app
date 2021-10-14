@@ -1,0 +1,26 @@
+.scrollList{
+    max-height: 200px;
+    overflow: auto;
+    background-color: white;
+    z-index: 2;
+    position: absolute; 
+    top: 30px;
+    left: 10px;
+    width: 100%;
+}
+
+.scrollList h4{
+    margin: 10px 5px;
+}
+
+.listItem{
+    padding-left: 15px;
+    padding-bottom: 3px;
+    border-bottom: 1px dotted black;
+    cursor: pointer;
+}
+
+.listItem:hover{
+    background-color: rgb(35, 35, 107);
+    color: white;
+}

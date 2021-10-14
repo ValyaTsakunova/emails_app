@@ -1,0 +1,31 @@
+.reciever{
+    position: relative;
+    margin-right: 10px;
+    background-color: rgba(104, 117, 126, 0.26);
+    border-radius: 10px;
+    padding: 2px 18px 2px 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.deleteUserButton:before, .deleteUserButton:after {
+    position: absolute;
+    top: 3px;
+    right: 7px;
+    content: ' ';
+    height: 10px;
+    width: 2px;
+    background-color: rgba(29, 28, 28, 0.63);
+}
+
+.deleteUserButton:before {
+    transform: rotate(45deg);
+}
+
+.deleteUserButton:after {
+    transform: rotate(-45deg);
+}
+
+.deleteUserButton:hover:after, .deleteUserButton:hover:before{
+    background-color: rgb(35, 35, 107)
+}

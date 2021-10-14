@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactQuill from 'react-quill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { useClickAway } from "react-use";
-import { v4 as uuidv4 } from 'uuid';
 import { useHistory } from "react-router-dom";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { sendEmail, getAllEmails, formats, modules } from '../services';
 import { ListOfSelectedUsers } from './ListOfSelectedUsers';
-import 'react-quill/dist/quill.snow.css';
-import '../styles/AdminPage.css';
 import { ListOfUsers } from './ListOfUsers';
 import Context from '../context/context';
+import 'react-quill/dist/quill.snow.css';
+import '../styles/AdminPage.css';
 
 function AdminPage() {
-    const [users, setUsers] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [allUsers, setAllUsers] = useState(false);
@@ -26,11 +22,8 @@ function AdminPage() {
     const [emptyFields, setEmptyFields] = useState(false);
     const [userAlreadySelected, setUserAlreadySelected] = useState(false);
 
-    const context = useContext(Context)
-
-    const scrollRef = useRef();
-    useClickAway(scrollRef, () => setInputValue(''));
-
+    const context = useContext(Context);
+    const { getUsersList, loading } = context;
     let history = useHistory();
 
     useEffect(() => {
@@ -42,12 +35,13 @@ function AdminPage() {
 
     useEffect(() => {
         (async () => {
+            loading(true)
             const res = await getAllEmails();
             if (typeof res == 'boolean' || typeof res == 'string') {
                 history.push('/')
-            } else {
-            console.log(res.length)
-            context.users = res
+            } else if (res) {
+                getUsersList(res)
+                loading(false)
             }
         })()
     }, [])
@@ -90,37 +84,23 @@ function AdminPage() {
                 file: fileText
             }] : []
         }
-        console.log(context.users.length)
-        console.log(message)
-        // const res = await sendEmail(message);
-        // if(res !== 'sended'){
-        //     localStorage.setItem("msg", text);
-        //     history.push('/');
-        // }else{
-        //     localStorage.removeItem('msg')
-        //     setSubject('');
-        //     setText('');
-        //     setSelectedUsers([]);
-        //     setFileName('');
-        //     setEmptyFields(false);
-        // }
+        const res = await sendEmail(message);
+        if(res !== 'sended'){
+            localStorage.setItem("msg", text);
+            history.push('/');
+        }else{
+            localStorage.removeItem('msg')
+            setSubject('');
+            setText('');
+            setSelectedUsers([]);
+            setFileName('');
+            setEmptyFields(false);
+        }
     }
-
 
     const deleteFile = () => {
         setFileName('');
         setFileText('')
-    }
-
-    const chooseUser = (user) => {
-        setAllUsers(false);
-        if (!selectedUsers.includes(user)) {
-            setSelectedUsers([...selectedUsers.filter(user => user !== 'all users are selected'), user]);
-            setUserAlreadySelected(false)
-        } else {
-            setTimeout(function () { setUserAlreadySelected(false) }, 3000);
-            setUserAlreadySelected(true)
-        }
     }
 
     const chooseAll = () => {
@@ -128,39 +108,34 @@ function AdminPage() {
         setAllUsers(true);
     }
 
-    const listOfUsers = users.filter(user => user.toLowerCase().includes(inputValue.toLowerCase())).map(user => {
-        return (<div key={uuidv4()} onClick={() => chooseUser(user)} className="listItem">{user}</div>)
-    })
-
     return (
         <>
             <div className="adminContainer">
-
-                <div className="resBlock">
+                <div className="recBlock">
                     <div className="recieversTitle">Recievers:</div>
                     <div className="recievers">
                         <ListOfSelectedUsers selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
                     </div>
                 </div>
-
                 <div className="multiSelectBlock">
                     <div className="multiSelect">
                         <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} className="userInput" placeholder="Search..." />
                         {inputValue ?
-                            <div id="scrollableDiv" className="scrollList" ref={scrollRef}>
-                                <ListOfUsers />
-                            </div> : null}
+                            <ListOfUsers inputValue={inputValue}
+                                setInputValue={setInputValue}
+                                setAllUsers={setAllUsers}
+                                selectedUsers={selectedUsers}
+                                setSelectedUsers={setSelectedUsers}
+                                setUserAlreadySelected={setUserAlreadySelected}
+                            />: null}
                     </div>
                     <button className="chooseAllButton" onClick={chooseAll}>Select all</button>
                 </div>
-
                 <div className="textEditor">
-
                     <div className="subjectBlock">
                         <p className="subjectTitle">Subject:</p>
                         <input className="subjectInput" value={subject} onChange={(e) => setSubject(e.target.value)}></input>
                     </div>
-
                     <ReactQuill theme="snow" value={text} onChange={(txt) => setText(txt)} formats={formats} modules={modules} />
                     <div className="sendBlock">
                         <input type="file" name="file" id="file" className="inputfile" onChange={(e) => onUploadFileChange(e)} multiple />
