@@ -141,8 +141,9 @@ function AdminPage() {
                         <input type="file" name="file" id="file" className="inputfile" onChange={(e) => onUploadFileChange(e)} multiple />
                         {!fileName ?
                             <label htmlFor="file" className="chooseFile">Choose a file</label> :
-                            <div><FontAwesomeIcon icon={faCopy} size="3x" color="rgb(35, 35, 107)" />
-                                <p>{fileName}</p>
+                            <div className="fileBlock">
+                                <FontAwesomeIcon icon={faCopy} size="3x" color="rgb(35, 35, 107)" />
+                                <p className="fileName">{fileName}</p>
                                 <button className="deleteFile" onClick={deleteFile}>Delete file</button>
                             </div>}
                         <button onClick={sendMessage} className="sendButton">Send</button>

@@ -8,7 +8,7 @@ import '../styles/ListOfUsers.css';
 export function ListOfUsers({ inputValue, setInputValue, selectedUsers, setSelectedUsers, setUserAlreadySelected, setAllUsers }) {
     const [list, setList] = useState([]);
     const [firstEl, setFirstEl] = useState(0);
-    const [lastEl, setLastEl] = useState(20)
+    const [lastEl, setLastEl] = useState(500);
     const context = useContext(Context);
     const { usersState, searchUsers } = context;
     const scrollRef = useRef();
@@ -16,19 +16,19 @@ export function ListOfUsers({ inputValue, setInputValue, selectedUsers, setSelec
 
     useEffect(() => {
         searchUsers(inputValue);
-        setFirstEl(21)
-        setLastEl(30);
+        setFirstEl(501)
+        setLastEl(600);
     }, [inputValue])
 
     useEffect(() => {
-        setList([...usersState.filteredList.slice(0, 20)]);
+        setList([...usersState.filteredList.slice(0, 500)]);
     }, [usersState.filteredList])
 
 
     const fetchMoreData = () => {
-        setList([...list, ...usersState.filteredList.slice(firstEl, lastEl)])
-        setFirstEl(lastEl + 1)
-        setLastEl(prev => prev + 5)
+        setList([...list, ...usersState.filteredList.slice(firstEl, lastEl)]);
+        setFirstEl(lastEl + 1);
+        setLastEl(lastEl + 100);
     };
 
     const chooseUser = (user) => {
